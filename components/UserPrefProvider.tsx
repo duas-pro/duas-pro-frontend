@@ -1,10 +1,21 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-const UserPrefContext = createContext("");
+interface UserPrefContextType {
+    selectedLanguage: string;
+    setSelectedLanguage: (language: string) => void;
+    translationFontSize: number;
+    setTranslationFontSize: (size: number) => void;
+}
 
-export const UserPrefProvider = ({ children }) => {
+const UserPrefContext = createContext<UserPrefContextType | undefined>(undefined);
+
+interface UserPrefProviderProps {
+    children: ReactNode;
+}
+
+export const UserPrefProvider = ({ children }: UserPrefProviderProps) => {
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [translationFontSize, setTranslationFontSize] = useState(3);
 
@@ -26,7 +37,7 @@ export const UserPrefProvider = ({ children }) => {
     }, [selectedLanguage]);
 
     useEffect(() => {
-        localStorage.setItem('translationFontSize', translationFontSize);
+        localStorage.setItem('translationFontSize', translationFontSize.toString());
     }, [translationFontSize]);
 
     return (
@@ -41,4 +52,10 @@ export const UserPrefProvider = ({ children }) => {
     );
 };
 
-export const useUserPref = () => useContext(UserPrefContext);
+export const useUserPref = (): UserPrefContextType => {
+    const context = useContext(UserPrefContext);
+    if (!context) {
+        throw new Error('useUserPref must be used within a UserPrefProvider');
+    }
+    return context;
+};

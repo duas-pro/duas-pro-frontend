@@ -1,12 +1,20 @@
-// context/LanguageContext.js
 'use client';
 
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 
-const LanguageContext = createContext("");
+interface LanguageContextType {
+    selectedLanguage: string;
+    setSelectedLanguage: (language: string) => void;
+}
 
-export const LanguageProvider = ({ children }) => {
-    const [selectedLanguage, setSelectedLanguage] = useState('');
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+interface LanguageProviderProps {
+    children: ReactNode;
+}
+
+export const LanguageProvider = ({ children }: LanguageProviderProps) => {
+    const [selectedLanguage, setSelectedLanguage] = useState<string>('');
 
     // Load language from localStorage
     useEffect(() => {
@@ -28,4 +36,10 @@ export const LanguageProvider = ({ children }) => {
     );
 };
 
-export const useLanguage = () => useContext(LanguageContext);
+export const useLanguage = (): LanguageContextType => {
+    const context = useContext(LanguageContext);
+    if (!context) {
+        throw new Error('useLanguage must be used within a LanguageProvider');
+    }
+    return context;
+};

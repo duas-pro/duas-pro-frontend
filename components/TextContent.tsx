@@ -17,7 +17,7 @@ type Props = {
   textLines: Record<string, Line>;
 };
 
-type Language = 'ar' | 'tx' | 'en' | 'de' | 'es' | 'fr' | 'tr';
+export type Language = 'ar' | 'tx' | 'en' | 'de' | 'es' | 'fr' | 'tr';
 
 export default function TextContent({ textLines }: Props) {
   const { selectedLanguage, translationFontSize } = useUserPref();
@@ -54,7 +54,7 @@ export default function TextContent({ textLines }: Props) {
           <p className="text-2xl font-bold arabic-text rtl">{line.ar}</p>
           <p className="text-lg italic mt-2">{line.tx}</p>
           <p className={`${fontSizeClass()} mt-2`}>
-            {line[selectedLanguage as keyof Line] || line.en}
+            {line[selectedLanguage] || line.en}
           </p>
         </div>
       ))}

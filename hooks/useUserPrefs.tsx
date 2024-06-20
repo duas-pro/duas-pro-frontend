@@ -1,16 +1,18 @@
+import { Language } from '@/components/TextContent'; // Stelle sicher, dass der Pfad korrekt ist
 import { useState, useEffect } from 'react';
 
 type UserPrefContextType = {
-  selectedLanguage: string;
-  setSelectedLanguage: (lang: string) => void;
+  selectedLanguage: Language;
+  setSelectedLanguage: (lang: Language) => void;
   translationFontSize: number;
   setTranslationFontSize: (size: number) => void;
 };
 
 export const useUserPref = (): UserPrefContextType => {
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(() => {
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('selectedLanguage') || 'en';
+      const storedLanguage = localStorage.getItem('selectedLanguage');
+      return (storedLanguage as Language) || 'en';
     }
     return 'en';
   });

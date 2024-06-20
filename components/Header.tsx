@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { FaUser, FaGlobe, FaCog, FaSearch, FaTimes } from 'react-icons/fa';
 import { useUserPref } from '@/hooks/useUserPrefs';
+import { Language } from './TextContent';
 
 const Header = () => {
   const { setSelectedLanguage, translationFontSize, setTranslationFontSize } = useUserPref();
@@ -13,7 +14,7 @@ const Header = () => {
   const popupRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  const handleLanguageChange = (lang: string) => {
+  const handleLanguageChange = (lang: Language) => {
     setSelectedLanguage(lang);
     setShowPopup(false);
   };
