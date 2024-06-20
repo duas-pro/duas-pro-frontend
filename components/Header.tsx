@@ -2,8 +2,8 @@
 
 import { FaUser, FaGlobe, FaCog, FaSearch, FaTimes } from 'react-icons/fa';
 import { useState, useRef, useEffect } from 'react';
-import {useLanguage} from "@/app/LanguageProvider";
 import {useUserPref} from "@/components/UserPrefProvider";
+import Link from 'next/link';
 
 const Header = () => {
     const { setSelectedLanguage, translationFontSize, setTranslationFontSize } = useUserPref();
@@ -57,7 +57,7 @@ const Header = () => {
 
     return (
         <header className="flex justify-between items-center w-full p-4 bg-gray-800 text-white border-b border-gray-700 relative">
-            <div className="text-2xl font-bold">Shia Duas</div>
+            <Link href={`/`} className="text-2xl font-bold">duas.pro</Link>
             <div className="flex gap-4">
                 <FaUser className="text-xl cursor-pointer" />
                 <FaGlobe className="text-xl cursor-pointer" onClick={() => setShowPopup(!showPopup)} />
