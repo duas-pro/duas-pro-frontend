@@ -2,7 +2,7 @@
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
-import TextContent from "@/components/text-content";
+import TextContent from "@/components/TextContent";
 import {UserPrefProvider} from "@/components/UserPrefProvider";
 
 export default async function Page({ params }: { params: { routeName: string } }) {
