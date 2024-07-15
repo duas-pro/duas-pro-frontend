@@ -1,0 +1,33 @@
+<script>
+    (function () {
+      const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+      const theme = settings.theme ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.add(theme);
+      const fontSize = settings.fontSize || 16; // Fallback auf 16, wenn keine Einstellung vorhanden
+      document.documentElement.style.setProperty('--arabic-font-size', fontSize + 'px');
+    })();
+</script>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <style>
+    :root {
+      --custom-font-size: 16px; /* Standardwert */
+    }
+    .arabic-font-size {
+      font-size: var(--arabic-font-size);
+    }
+  </style>
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	%sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">%sveltekit.body%</div>
+</body>
+
+</html>
