@@ -1,5 +1,13 @@
 import { writable } from 'svelte/store';
 
-export const isLiveReading = writable(false);
-export const liveReadingCode = writable('');
-export const liveReadingUsers = writable(0);
+interface LiveReadingState {
+    isLiveReading: boolean;
+    liveReadingCode: string | null;
+    liveReadingUsers: number;
+}
+
+export const liveReadingStore = writable<LiveReadingState>({
+  isLiveReading: false,
+  liveReadingCode: '',
+  liveReadingUsers: 0,
+});

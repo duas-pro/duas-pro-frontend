@@ -4,7 +4,7 @@
     import { Tabs, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
     import { Book, Languages, Presentation } from 'lucide-svelte';
     import LiveReadingDialog from './LiveReadingDialog.svelte';
-    import { isLiveReading, liveReadingCode, liveReadingUsers } from '$lib/stores/liveReading';
+	import { liveReadingStore } from '$lib/stores/liveReading';
 
     function setActiveTab(tab: string | undefined) {
         if (tab) {
@@ -35,9 +35,9 @@
     {/if}
 
     <div class="flex w-1/4 justify-end">
-        {#if $isLiveReading}
+        {#if $liveReadingStore.isLiveReading}
             <div class="flex items-center text-xs">
-                Join [{$liveReadingCode}] ({$liveReadingUsers})
+                Join [{$liveReadingStore.liveReadingCode}] ({$liveReadingStore.liveReadingUsers})
             </div>
         {/if}
         <LiveReadingDialog />

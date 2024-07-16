@@ -9,7 +9,7 @@
 	import { duaStore } from '$lib/stores/dua';
 	import { headerStore } from '$lib/stores/headerStore';
 	import { onMount } from 'svelte';
-
+	
     export let data: {
         dua: Dua
     };
