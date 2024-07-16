@@ -7,6 +7,7 @@
      -->
 <script lang="ts">
 	import { Card, CardContent } from '$lib/components/ui/card';
+	import { settingsStore } from '$lib/stores/settings';
 
 	export let line: DuaLine;
 	export let index: number;
@@ -26,16 +27,10 @@
 				>
 					{index + 1}
 				</span>
-				<p class="font-arabic arabic-font-size">{line['ar']}</p>
-				<p class="text-sm">{line['translit']}</p>
-				<p class="text-sm">{line['en']}</p>
+				<p class="primary-dua-font-size">{line[$settingsStore.primaryDuaLanguage]}</p>
+				<p class="secondary-dua-font-size">{line[$settingsStore.secondaryDuaLanguage]}</p>
+				<p class="tertiary-dua-font-size">{line[$settingsStore.tertiaryDuaLanguage]}</p>
 			</div>
 		</CardContent>
 	</Card>
 </div>
-
-<style>
-	.font-arabic {
-		font-family: 'Amiri', serif;
-	}
-</style>

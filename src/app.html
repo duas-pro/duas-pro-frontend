@@ -4,8 +4,6 @@
       const theme = settings.theme ||
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.classList.add(theme);
-      const fontSize = settings.fontSize || 16; // Fallback auf 16, wenn keine Einstellung vorhanden
-      document.documentElement.style.setProperty('--arabic-font-size', fontSize + 'px');
     })();
 </script>
 <!doctype html>
@@ -16,8 +14,14 @@
     :root {
       --custom-font-size: 16px; /* Standardwert */
     }
-    .arabic-font-size {
-      font-size: var(--arabic-font-size);
+    .primary-dua-font-size {
+      font-size: var(--primary-dua-font-size);
+    }
+    .secondary-dua-font-size {
+      font-size: var(--secondary-dua-font-size);
+    }
+    .tertiary-dua-font-size {
+      font-size: var(--tertiary-dua-font-size);
     }
   </style>
 	<meta charset="utf-8" />

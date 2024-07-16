@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card, CardContent } from '$lib/components/ui/card';
+	import { settingsStore } from '$lib/stores/settings';
 
 	export let lines: DuaLine[];
 	export let currentVerseIndex: number;
@@ -14,7 +15,7 @@
 						id="verse-{index}"
 						class="verse-span {index === currentVerseIndex ? 'current-verse' : ''}"
 					>
-						{line['ar']}
+						{line[$settingsStore.primaryDuaLanguage]}
 					</span>
 					{#if line.endOfSection && index !== lines.length - 1}
 						<div class="my-1"></div>

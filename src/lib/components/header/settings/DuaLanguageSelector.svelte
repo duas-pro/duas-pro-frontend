@@ -1,120 +1,65 @@
 <script lang="ts">
-    import { Button } from '$lib/components/ui/button';
-    import DuaLanguageItem from '$lib/components/header/settings/DuaLanguageItem.svelte';
-    import {
-        Command,
-        CommandEmpty,
-        CommandGroup,
-        CommandInput,
-        CommandItem
-    } from '$lib/components/ui/command';
-    import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
-    import { Check, ChevronsUpDown } from 'lucide-svelte';
-    import { dndzone } from 'svelte-dnd-action';
-    import { settingsStore, type LanguageItem } from '$lib/stores/settings';
+    import { settingsStore, getLanguageLabel, type LanguageCode } from '$lib/stores/settings';
+    import LanguageSelector from './LanguageSelector.svelte';
+    import FontSizeAdjuster from './FontSizeAdjuster.svelte';
 
-    const languages: LanguageItem[] = [
-        { value: 'ar', label: 'Arabic', id: 'ar' },
-        { value: 'en', label: 'English', id: 'en' },
-        { value: 'fr', label: 'French', id: 'fr' },
-        { value: 'de', label: 'German', id: 'de' },
-        { value: 'id', label: 'Indonesian', id: 'id' },
-        { value: 'tr', label: 'Turkish', id: 'tr' }
-    ];
+    let primaryLanguage: LanguageCode;
+    let secondaryLanguage: LanguageCode;
+    let tertiaryLanguage: LanguageCode;
+    let primaryFontSize: number;
+    let secondaryFontSize: number;
+    let tertiaryFontSize: number;
 
-    let selectedLanguages: LanguageItem[];
     settingsStore.subscribe(settings => {
-        selectedLanguages = settings.selectedLanguages;
+        primaryLanguage = settings.primaryDuaLanguage;
+        secondaryLanguage = settings.secondaryDuaLanguage;
+        tertiaryLanguage = settings.tertiaryDuaLanguage;
+        primaryFontSize = settings.primaryDuaFontSize;
+        secondaryFontSize = settings.secondaryDuaFontSize;
+        tertiaryFontSize = settings.tertiaryDuaFontSize;
     });
 
-    let open = false;
+    function setLanguage(type: 'primary' | 'secondary' | 'tertiary', languageCode: LanguageCode) {
+        settingsStore.update(settings => ({
+            ...settings,
+            [`${type}DuaLanguage`]: languageCode
+        }));
+    }
 
-    function toggleLanguage(language: LanguageItem) {
+    function adjustFontSize(type: 'primary' | 'secondary' | 'tertiary', increment: boolean) {
         settingsStore.update(settings => {
-            const index = settings.selectedLanguages.findIndex((lang) => lang.value === language.value);
-            if (index === -1) {
-                return { ...settings, selectedLanguages: [...settings.selectedLanguages, language] };
-            } else {
-                return { ...settings, selectedLanguages: settings.selectedLanguages.filter((lang) => lang.value !== language.value) };
-            }
+            const currentSize = settings[`${type}DuaFontSize`];
+            const newSize = increment ? Math.min(24, currentSize + 1) : Math.max(12, currentSize - 1);
+            return {
+                ...settings,
+                [`${type}DuaFontSize`]: newSize
+            };
         });
-        open = false;
-    }
-
-    function removeLanguage(language: LanguageItem) {
-        settingsStore.update(settings => ({
-            ...settings,
-            selectedLanguages: settings.selectedLanguages.filter((lang) => lang.value !== language.value)
-        }));
-    }
-
-    function handleDndConsider(e: CustomEvent<DndEvent>) {
-        settingsStore.update(settings => ({
-            ...settings,
-            selectedLanguages: e.detail.items
-        }));
-    }
-
-    function handleDndFinalize(e: CustomEvent<DndEvent>) {
-        settingsStore.update(settings => ({
-            ...settings,
-            selectedLanguages: e.detail.items
-        }));
     }
 </script>
 
-<div class="flex flex-col space-y-4">
-    <div 
-        use:dndzone={{items: selectedLanguages, flipDurationMs: 300}}
-        on:consider={handleDndConsider}
-        on:finalize={handleDndFinalize}
-        class="flex flex-wrap gap-2"
-    >
-        {#each selectedLanguages as language (language.id)}
-            <div class="dnd-item">
-                <DuaLanguageItem {language} onRemove={removeLanguage} />
-            </div>
-        {/each}
+<div class="space-y-4">
+    <div>
+        <h5 class="mb-2 font-medium">1. Dua Language</h5>
+        <LanguageSelector type="primary" languageCode={primaryLanguage} onSelect={setLanguage} />
+        <div class="mt-2">
+            <FontSizeAdjuster type="primary" fontSize={primaryFontSize} onAdjust={adjustFontSize} />
+        </div>
     </div>
 
-    <Popover bind:open>
-        <PopoverTrigger asChild let:builder>
-            <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                class="w-full justify-between"
-                builders={[builder]}
-            >
-                {selectedLanguages.length > 0
-                    ? `${selectedLanguages.length} selected`
-                    : 'Select languages...'}
-                <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-        </PopoverTrigger>
-        <PopoverContent class="w-full p-0">
-            <Command>
-                <CommandInput placeholder="Search language..." />
-                <CommandEmpty>No language found.</CommandEmpty>
-                <CommandGroup>
-                    {#each languages as language}
-                        <CommandItem onSelect={(_) => toggleLanguage(language)}>
-                            <Check
-                                class={selectedLanguages.some((lang) => lang.value === language.value)
-                                    ? 'opacity-100'
-                                    : 'opacity-0'}
-                            />
-                            {language.label}
-                        </CommandItem>
-                    {/each}
-                </CommandGroup>
-            </Command>
-        </PopoverContent>
-    </Popover>
-</div>
+    <div>
+        <h5 class="mb-2 font-medium">2. Dua Language</h5>
+        <LanguageSelector type="secondary" languageCode={secondaryLanguage} onSelect={setLanguage} />
+        <div class="mt-2">
+            <FontSizeAdjuster type="secondary" fontSize={secondaryFontSize} onAdjust={adjustFontSize} />
+        </div>
+    </div>
 
-<style>
-    .dnd-item {
-        cursor: move;
-    }
-</style>
+    <div>
+        <h5 class="mb-2 font-medium">3. Dua Language</h5>
+        <LanguageSelector type="tertiary" languageCode={tertiaryLanguage} onSelect={setLanguage} />
+        <div class="mt-2">
+            <FontSizeAdjuster type="tertiary" fontSize={tertiaryFontSize} onAdjust={adjustFontSize} />
+        </div>
+    </div>
+</div>

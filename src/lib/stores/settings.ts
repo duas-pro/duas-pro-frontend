@@ -1,25 +1,32 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
-// Definieren Sie die Typen
 export type Theme = 'light' | 'dark';
-export type Language = 'de' | 'en';
+export type SystemLanguage = 'de' | 'en';
+export type LanguageCode = string;
 
 export interface LanguageItem {
-    value: string;
+    value: LanguageCode;
     label: string;
-    id: string;
 }
 
-// Definieren Sie das Interface für die Einstellungen
 interface Settings {
-    fontSize: number;
     theme: Theme;
-    systemLanguage: Language;
-    selectedLanguages: LanguageItem[];
+    systemLanguage: SystemLanguage;
+    primaryDuaLanguage: LanguageCode;
+    secondaryDuaLanguage: LanguageCode;
+    tertiaryDuaLanguage: LanguageCode;
+    primaryDuaFontSize: number;
+    secondaryDuaFontSize: number;
+    tertiaryDuaFontSize: number;
 }
 
-// Hilfsfunktion zum Laden der Einstellungen aus dem localStorage
+export const languages: LanguageItem[] = [
+    { value: 'ar', label: 'Arabic' },
+    { value: 'translit', label: 'Transliteration' },
+    { value: 'en', label: 'English' },
+];
+
 function loadSettings(): Settings {
     if (browser) {
         const savedSettings = localStorage.getItem('settings');
@@ -28,31 +35,39 @@ function loadSettings(): Settings {
         }
     }
     return {
-        fontSize: 16,
         theme: browser && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
         systemLanguage: 'de',
-        selectedLanguages: []
+        primaryDuaLanguage: 'ar',
+        secondaryDuaLanguage: 'translit',
+        tertiaryDuaLanguage: 'en',
+        primaryDuaFontSize: 16,
+        secondaryDuaFontSize: 16,
+        tertiaryDuaFontSize: 16
     };
 }
 
-// Erstellen Sie den Store mit Initialwerten
 const initialSettings: Settings = loadSettings();
 
 export const settingsStore = writable<Settings>(initialSettings);
 
-// Subscriptions für Persistenz
 if (browser) {
+    console.log("hhhhh")
     settingsStore.subscribe((settings) => {
         localStorage.setItem("settings", JSON.stringify(settings));
-        document.documentElement.style.setProperty('--arabic-font-size', settings.fontSize + 'px');
+        document.documentElement.style.setProperty('--primary-dua-font-size', settings.primaryDuaFontSize + 'px');
+        document.documentElement.style.setProperty('--secondary-dua-font-size', settings.secondaryDuaFontSize + 'px');
+        document.documentElement.style.setProperty('--tertiary-dua-font-size', settings.tertiaryDuaFontSize + 'px');
     });
 }
 
-// Hilfsfunktionen für Typkonvertierung
+export function getLanguageLabel(code: LanguageCode): string {
+    return languages.find(lang => lang.value === code)?.label || code;
+}
+
 export function stringToTheme(value: string): Theme {
     return value === 'dark' ? 'dark' : 'light';
 }
 
-export function stringToLanguage(value: string): Language {
+export function stringToSystemLanguage(value: string): SystemLanguage {
     return value === 'en' ? 'en' : 'de';
 }

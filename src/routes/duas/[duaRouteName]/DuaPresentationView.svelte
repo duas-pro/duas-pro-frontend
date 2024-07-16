@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Card, CardContent } from '$lib/components/ui/card';
 	import { duaStore } from '$lib/stores/dua';
+	import { settingsStore } from '$lib/stores/settings';
     import { onMount } from 'svelte';
 
     export let lines: DuaLine[];
@@ -30,9 +31,9 @@
     <Card class="flex-grow overflow-auto">
         <CardContent class="flex items-center justify-center h-full p-6">
             <div class="text-center space-y-4 max-w-2xl">
-                <p class="font-arabic text-4xl mb-6">{lines[$duaStore.currentVerse]['ar']}</p>
-                <p class="text-2xl italic mb-4">{lines[$duaStore.currentVerse]['translit']}</p>
-                <p class="text-xl">{lines[$duaStore.currentVerse]['en']}</p>
+                <p class="font-arabic text-4xl mb-6">{lines[$duaStore.currentVerse][$settingsStore.primaryDuaLanguage]}</p>
+                <p class="text-2xl italic mb-4">{lines[$duaStore.currentVerse][$settingsStore.secondaryDuaLanguage]}</p>
+                <p class="text-xl">{lines[$duaStore.currentVerse][$settingsStore.tertiaryDuaLanguage]}</p>
             </div>
         </CardContent>
     </Card>
