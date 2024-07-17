@@ -1,38 +1,61 @@
-# create-svelte
+# Duas.pro Frontend
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+This is the frontend repository for Duas.pro, a comprehensive web application providing access to 80+ Shia Islamic supplications (duas) and pilgrimage prayers (ziyarat) in 8 different languages. The frontend interacts with the [Shia Duas API](https://github.com/duas-pro/shia-duas-api) to deliver a user-friendly interface for accessing and interacting with this spiritual content.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Access to 80+ Shia Islamic supplications (duas) and pilgrimage prayers (ziyarat)
+- Multi-language support with 8 different languages available
+- Audio playback of duas
+- Line-by-line translations with timestamps
+- Responsive design for various devices and screen sizes
+- User-friendly interface for easy navigation and dua selection
+- Personalization options:
+  - Adjustable font size
+  - Customizable order of translations
+  - Dark and light mode
+- Three different viewing modes:
+  - Line-by-line view
+  - Full text view (as in a book)
+  - Presentation mode
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Technology
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+This frontend is built using [SvelteKit](https://kit.svelte.dev/) and [shadcn](https://www.shadcn-svelte.com/), providing a modern and responsive user interface.
 
-## Developing
+## Live Website
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+You can access the live version of Duas.pro at [https://duas.pro](https://duas.pro).
 
-```bash
-npm run dev
+## Local Development
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+To set up the project locally:
 
-## Building
+1. Clone the repository:
+   ```git clone https://github.com/duas-pro/duas-pro-frontend.git```
+2. Navigate to the project directory:
+   ```cd duas-pro-frontend```
+3. Install dependencies:
+   ```npm install```
+4. Start the development server:
+   ```npm run dev```
 
-To create a production version of your app:
+## API Integration
 
-```bash
-npm run build
-```
+This frontend integrates with the Shia Duas API. You can find more information about the API [here](https://github.com/duas-pro/shia-duas-api).
 
-You can preview the production build with `npm run preview`.
+## Upcoming Features and Roadmap
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+We are continuously working to improve Duas.pro. Our plans for future development include:
+
+1. Evolving into a Progressive Web App (PWA) for offline functionality
+2. Bookmark and favorite duas functionality
+3. Social sharing features
+4. Integration with the upcoming notification system for duas
+5. Implementation of the "public viewing" feature for collaborative dua reading
+6. Visualization of dua reading analytics and trends
+7. Viualization of dua recommendations based on personal user preferences
+
+## Contribution
+
+We welcome contributions to the Duas.pro frontend! If you have suggestions, bug reports, or want to contribute code, please feel free to open an issue or submit a pull request.
